@@ -314,7 +314,7 @@ static am_Entry *am_mainposition(const am_Table *t, am_Symbol key)
 { return am_index(t->hash, (key.id & (t->size - 1))*t->entry_size); }
 
 static void am_resettable(am_Table *t)
-{ t->count = 0; memset(t->hash, 0, t->lastfree = t->size * t->entry_size); }
+{ if (t->hash == NULL) return; t->count = 0; memset(t->hash, 0, t->lastfree = t->size * t->entry_size); }
 
 static size_t am_hashsize(am_Table *t, size_t len) {
     size_t newsize = AM_MIN_HASHSIZE;
@@ -405,6 +405,7 @@ static am_Entry *am_settable(am_Solver *solver, am_Table *t, am_Symbol key) {
 }
 
 static int am_nextentry(const am_Table *t, am_Entry **pentry) {
+    if (t->size == 0) return 0;
     am_Entry *end = am_index(t->hash, t->size*t->entry_size);
     am_Entry *e = *pentry;
     e = e ? am_index(e, t->entry_size) : t->hash;
