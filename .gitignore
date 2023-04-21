@@ -6,3 +6,5 @@
 *.exe
 
 *.so
+/zig-cache/
+/zig-out/
