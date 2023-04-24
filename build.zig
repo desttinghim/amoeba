@@ -13,10 +13,7 @@ pub fn build(b: *std.Build) void {
     lib.installHeader("./amoeba.h", "amoeba.h");
     lib.addIncludePath(".");
     lib.linkLibC();
-
-    _ = b.addInstallArtifact(lib);
-
-    b.getInstallStep().dependOn(&lib.step);
+    b.installArtifact(lib);
 
     // Run c test harness
 
